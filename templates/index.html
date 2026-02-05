@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Webapp Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            padding: 2.5em 2em 2em 2em;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #2d3a4b;
+            margin-bottom: 0.5em;
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+        .desc {
+            color: #5a6a85;
+            margin-bottom: 2em;
+            font-size: 1.1em;
+        }
+        .status {
+            margin-top: 1.5em;
+            font-size: 1.2em;
+            color: #1abc9c;
+            font-weight: 600;
+            min-height: 1.5em;
+        }
+        .btn {
+            padding: 0.7em 2em;
+            font-size: 1.1em;
+            border: none;
+            background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%);
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 2px 8px rgba(91, 134, 229, 0.15);
+        }
+        .btn:hover {
+            background: linear-gradient(90deg, #5b86e5 0%, #36d1c4 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .footer {
+            margin-top: 2em;
+            color: #b0b8c1;
+            font-size: 0.95em;
+        }
+        @media (max-width: 500px) {
+            .card { padding: 1.5em 0.5em; }
+            h1 { font-size: 1.5em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🚀 Flask Webapp</h1>
+        <div class="desc">A beautiful dashboard for your Python app.<br>Click below to check health status.</div>
+        <button class="btn" onclick="checkHealth()">Check Health</button>
+        <div class="status" id="status"></div>
+        <div class="footer">Made with ❤️ using Flask</div>
+    </div>
+    <script>
+        function checkHealth() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = 'Checking...';
+            fetch('/health')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'healthy') {
+                        statusDiv.textContent = '✅ App is healthy!';
+                        statusDiv.style.color = '#1abc9c';
+                    } else {
+                        statusDiv.textContent = '⚠️ App is not healthy!';
+                        statusDiv.style.color = '#e67e22';
+                    }
+                })
+                .catch(() => {
+                    statusDiv.textContent = '❌ Error connecting to backend.';
+                    statusDiv.style.color = '#e74c3c';
+                });
+        }
+    </script>
+</body>
